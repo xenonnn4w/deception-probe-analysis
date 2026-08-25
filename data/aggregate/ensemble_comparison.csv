@@ -1,0 +1,14 @@
+# fix65: single layer at 65% depth. mean: unweighted mean of per-layer scores.
+# lr-ens: logistic regression over layer scores, fit ONLY on repe train-set
+# scores (leakage-free: no eval data used for weights or standardization).
+model,dataset,auroc_fixed65,auroc_meanlayers,auroc_lr_ensemble,n_honest,n_deceptive
+Qwen3-0.6B,liars_bench__instructed-deception,0.8914,0.8546,0.8289,48,52
+Qwen3-0.6B,liars_bench__insider-trading,0.7804,0.6379,0.4396,47,53
+Qwen3-0.6B,liars_bench__convincing-game,0.7411,0.5746,0.4218,51,49
+Qwen3-0.6B,liars_bench__harm-pressure-choice,0.6795,0.6184,0.4915,46,54
+Qwen3-0.6B,liars_bench__harm-pressure-knowledge-report,0.379,0.453,0.547,49,51
+Qwen3-14B,liars_bench__instructed-deception,0.9471,0.9519,0.9331,48,52
+Qwen3-14B,liars_bench__insider-trading,0.9562,0.8378,0.7852,47,53
+Qwen3-14B,liars_bench__convincing-game,0.892,0.8391,0.7647,51,49
+Qwen3-14B,liars_bench__harm-pressure-choice,0.6546,0.6973,0.6832,46,54
+Qwen3-14B,liars_bench__harm-pressure-knowledge-report,0.3886,0.6479,0.585,49,51

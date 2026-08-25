@@ -1,0 +1,21 @@
+{
+  "experiment_date": "2026-08-25",
+  "packaged_on": "2026-10-22",
+  "files": [
+    {
+      "file": "data/aggregate/layer_metrics.csv",
+      "sha256": "be0868e40742796cfa4f6838bf68eee4f7ffbee76f9383bde6421e89e750b22a",
+      "type": "historical aggregate experimental result"
+    },
+    {
+      "file": "data/aggregate/scaling_summary.csv",
+      "sha256": "3286d5de8cf6a396016cad7803d8a2d69cd3764202130d68d9e5ef126e10ed0a",
+      "type": "historical aggregate experimental result"
+    },
+    {
+      "file": "data/aggregate/ensemble_comparison.csv",
+      "sha256": "083ea1e1cdc8f80b57162496f12d443e2338a06fb2ec58198d1490eac718672f",
+      "type": "historical aggregate experimental result"
+    }
+  ]
+}
