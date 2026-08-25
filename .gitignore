@@ -1,0 +1,32 @@
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+*token*
+*credential*
+
+# Environments, caches, and packaging
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+.DS_Store
+
+# Keep datasets, model artifacts, execution logs, and assessment packets local
+data/raw/
+data/rollouts/
+activations/
+checkpoints/
+logs/
+session_logs/
+private/
+vendor/
+*.pt
+*.pth
+*.safetensors
+*.pkl
+*.zip
+*.tar.gz
