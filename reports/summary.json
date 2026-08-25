@@ -1,0 +1,37 @@
+{
+  "models": [
+    "Qwen3-0.6B",
+    "Qwen3-1.7B",
+    "Qwen3-4B",
+    "Qwen3-8B",
+    "Qwen3-14B"
+  ],
+  "tasks": [
+    "liars_bench__convincing-game",
+    "liars_bench__harm-pressure-choice",
+    "liars_bench__harm-pressure-knowledge-report",
+    "liars_bench__insider-trading",
+    "liars_bench__instructed-deception"
+  ],
+  "layer_measurements": 840,
+  "model_task_pairs": 25,
+  "examples_per_model_task": 100,
+  "ensemble_mean_task_auroc": {
+    "Qwen3-0.6B": {
+      "auroc_fixed65": 0.69428,
+      "auroc_meanlayers": 0.6277,
+      "auroc_lr_ensemble": 0.54576
+    },
+    "Qwen3-14B": {
+      "auroc_fixed65": 0.7677,
+      "auroc_meanlayers": 0.7948,
+      "auroc_lr_ensemble": 0.75024
+    }
+  },
+  "limitations": [
+    "Historical aggregates; no new inference",
+    "Best-layer selection uses evaluation data",
+    "On-policy pilot labels were not independently verified",
+    "Confidence intervals are imported, not recomputed"
+  ]
+}
