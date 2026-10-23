@@ -16,6 +16,21 @@
       "file": "data/aggregate/ensemble_comparison.csv",
       "sha256": "083ea1e1cdc8f80b57162496f12d443e2338a06fb2ec58198d1490eac718672f",
       "type": "historical aggregate experimental result"
+    },
+    {
+      "file": "figures/q1_best_layer_scaling.png",
+      "sha256": "19d33cb8283a329256af415f36ed0ad3f1fef43c604ab690e97ed0d6225e756a",
+      "type": "original August 2026 experiment figure; preserved byte-for-byte"
+    },
+    {
+      "file": "figures/q1_fixed65_scaling.png",
+      "sha256": "e25b6dcae7ca0978aafdf7abaed2acab777b7854db34b119e58cb56f11a1c244",
+      "type": "original August 2026 experiment figure; preserved byte-for-byte"
+    },
+    {
+      "file": "figures/q4_layer_cosine_matrices.png",
+      "sha256": "662f90ccc843132d5ab7caf1b94c8bfdab9a91919d62935068e80cbc5e2ab77c",
+      "type": "original August 2026 experiment figure; preserved byte-for-byte"
     }
   ]
 }

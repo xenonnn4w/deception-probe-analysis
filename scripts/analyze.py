@@ -109,8 +109,8 @@ def plot(output, scaling):
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
-    folder = ROOT / "figures"
-    folder.mkdir(exist_ok=True)
+    folder = ROOT / "figures" / "generated"
+    folder.mkdir(parents=True, exist_ok=True)
     fig, ax = plt.subplots(figsize=(9, 5.5))
     for task in output["tasks"]:
         rows = sorted((r for r in scaling if r["dataset"] == task), key=lambda r: float(r["params_b"]))

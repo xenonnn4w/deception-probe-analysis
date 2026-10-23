@@ -14,6 +14,7 @@ __pycache__/
 build/
 dist/
 .DS_Store
+/figures/generated/
 
 # Keep datasets, model artifacts, execution logs, and assessment packets local
 data/raw/

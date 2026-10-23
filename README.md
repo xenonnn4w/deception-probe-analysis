@@ -1,89 +1,40 @@
 # Deception Probe Analysis
 
-An empirical analysis of how linear-probe performance varies with model size, evaluation task, and transformer layer, with a comparison of layer-fusion methods.
+How reliably do linear deception probes transfer across model sizes, tasks, and transformer layers?
 
-**Status:** retrospective analysis of experiments completed in August 2026. This repository packages aggregate results and a newly written analysis script. It does not include the original model-inference pipeline or claim an independently invented deception-detection method. See [provenance](docs/PROVENANCE.md).
+[Read the study](https://xenonnn4w.me/research/deception-probes) · [Findings](reports/findings.md) · [Methods](docs/METHODS.md)
 
-## Research questions
+Experiments completed in **August 2026** on an **NVIDIA A100 40GB**: five Qwen3 models (0.6B–14B), five Liars’ Bench tasks, and 100 examples per model/task. The same task examples are reused across models. This repository contains the saved aggregates, original figures, and aggregate-analysis code.
 
-- Does probe discrimination improve consistently with model size?
-- How much do conclusions depend on evaluation task and layer selection?
-- Do averaging and logistic-regression stacking improve transfer to unseen tasks?
-- What labeling changes are necessary when moving from externally generated text to a model's own generations?
+## Findings
 
-## Scope
+- **Scaling depends on the task and layer.** Larger models do not improve consistently across every task.
+- **Layer selection changes the story.** Selecting the best layer after seeing evaluation labels is exploratory, not a validated improvement.
+- **Layer fusion is mixed.** For 14B, mean task AUROC is 0.768 at fixed depth, 0.795 with layer averaging, and 0.750 with LR stacking. Both fusion methods underperform the fixed layer at 0.6B.
+- **New generations need new labels.** A 20-response pilot exposed disagreements with inherited labels; it does not support a reliable on-policy performance comparison.
 
-| Component | Scope |
-| --- | --- |
-| Models | Qwen3 0.6B, 1.7B, 4B, 8B, 14B |
-| Probe training | RepE honesty prompts; logistic regression |
-| Evaluation | Five Liars' Bench tasks; 100 examples per model/task |
-| Layer analysis | 840 aggregate model/task/layer measurements |
-| Summary uncertainty | Historical 95% stratified-bootstrap intervals, 1,000 resamples |
-| Ensemble comparison | 0.6B and 14B; fixed-depth layer, layer mean, LR stacking |
-| On-policy pilot | 20 generations; inherited labels were unreliable, so no valid performance conclusion |
+## Original experiment figures
 
-The 840 rows are correlated layer measurements, not 840 independent experiments. The five models reuse the task examples; do not describe these as 2,500 distinct benchmark examples.
+**Fixed-depth scaling.** Probes evaluated near 65% depth; error bars are the saved bootstrap intervals.
 
-## Main findings
+![Fixed-depth AUROC across five Qwen3 model sizes and five tasks](figures/q1_fixed65_scaling.png)
 
-1. Scaling is task- and layer-dependent. Strong discrimination on explicitly instructed deception does not establish detection of unprompted strategic deception.
-2. A fixed layer near 65% depth and the best layer selected after viewing evaluation results can give substantially different impressions. The latter is optimistic and exploratory.
-3. Zero-shot fusion is inconsistent. On the 14B model, mean AUROC across tasks changes from approximately 0.768 for the fixed layer to 0.795 for layer averaging; the LR ensemble reaches 0.750. For 0.6B, both fusion methods perform worse than the fixed layer.
-4. The on-policy pilot surfaced a labeling problem: expected behavior is not a verified label for newly generated text. Its apparent AUROC difference is not evidence of a true on/off-policy performance gap.
+**Best observed layer.** Layers selected using evaluation performance; intervals do not correct for selection bias.
 
-See the [research report](reports/findings.md) for interpretation and limitations.
+![Post-hoc best-layer AUROC across model sizes](figures/q1_best_layer_scaling.png)
+
+**Layer geometry.** Cosine similarity between centroid-difference directions, not fitted probe weights. The original image is preserved; the underlying centroid arrays are not included.
+
+![Layer cosine-similarity matrices for Qwen3-0.6B and Qwen3-14B](figures/q4_layer_cosine_matrices.png)
 
 ## Reproduce the aggregate analysis
 
-Python 3.10+; no GPU or external service is required. The summary command uses only the standard library:
+Python 3.10+; no GPU required:
 
 ```bash
 python scripts/analyze.py
 ```
 
-It validates the input tables and writes `reports/summary.json` and `reports/scaling_by_task.csv`.
+This validates saved input hashes and writes summary tables to `reports/`. Optional redraws require `requirements-viz.txt`: run `python scripts/analyze.py --plots` to write them to `figures/generated/`, separately from the original images above.
 
-To regenerate figures in an isolated environment:
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements-viz.txt
-python scripts/analyze.py --plots
-```
-
-![Fixed-depth probe performance](figures/scaling_fixed_depth.png)
-
-![Ensemble comparison](figures/ensemble_comparison.png)
-
-This reproduces analysis of saved aggregates, **not** model training, individual predictions, bootstrap resampling, or the original inference experiments. See [methods](docs/METHODS.md).
-
-## Structure
-
-```text
-data/
-  aggregate/                 Historical CSV tables, without prompt text
-  manifest.json              Input hashes and experiment date
-docs/
-  METHODS.md                 Experimental setup and reproducibility limits
-  PROVENANCE.md              Origin, reused components, redistribution status
-reports/
-  findings.md                Findings and limitations
-  scaling_by_task.csv        Generated layer-selection comparison
-  summary.json               Generated numerical summary
-scripts/
-  analyze.py                 Aggregate validation, analysis, and plotting
-figures/                     Figures regenerated from aggregate tables
-```
-
-## References and attribution
-
-- [Qwen3 model family](https://huggingface.co/Qwen)
-- [Liars' Bench dataset](https://huggingface.co/datasets/Cadenza-Labs/liars-bench); the original exercise specified revision `65299c5b10aa07adf75716ecb875c6713eed0dde`. The aggregate tables alone cannot independently verify the downloaded revision.
-- RepE honesty prompt construction and the supplied `deception_detection` framework used for the original experiments. That framework is not redistributed here.
-- The supplied preprint *Linear Probe Accuracy Scales with Model Size and Benefits from Multi-Layer Ensembling* motivated the replication. Its PDF and assessment materials are not redistributed here.
-
-## Publication status
-
-Prepared for a private GitHub repository on 22 October 2026. The experiments date to August 2026; repository packaging and new analysis code date to October 2026. Author dates have been retrospectively assigned to 25 August 2026 to group this work with the experiment artifacts; they are not a record of when these commits or all files were created. Both author and committer dates are retrospectively assigned to August. The actual repository creation, packaging, and history rewrite occurred on 22 October 2026. The four-commit sequence and author times are reconstructed, not recovered historical development. No blanket redistribution license is asserted for historical results or supplied materials. Before a public release, establish any applicable permissions and replace the missing inference pipeline with appropriately licensed code or a documented public dependency. Organization branding has been omitted; underlying provenance has not been relabeled as independent work.
+The package does not reproduce model inference, probe training, or bootstrap resampling. These results concern labeled benchmark behavior, not demonstrated detection of real-world scheming. See [methods and references](docs/METHODS.md) and [provenance](docs/PROVENANCE.md) for the original exercise, contribution boundaries, and retrospective commit dates.
